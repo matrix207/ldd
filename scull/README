@@ -1,0 +1,15 @@
+How to use
+
+step 1: build source
+			make
+
+step 2: install module to kernel, execute command:
+			insmod scullc.ko
+
+step 3: 
+
+step 4: remove module
+			rmmode scull
+
+step 5: clean project
+			make clean

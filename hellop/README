@@ -1,0 +1,23 @@
+How to use
+
+step 1: build source
+			make
+
+step 2: insert module to kernel, execute command:
+			insmod hellop.ko howmany=10 whom="Mom"
+		check module install success
+			lsmod | grep hellop
+
+step 3: check the result (print "hello, Mom" 10 times)
+		execute commamd 
+			dmesg 
+		or 
+			grep "hello" /var/log/message
+
+step 4: remove module
+			rmmode hellop
+		and use command to check remove success
+			lsmod | grep hellop
+
+step 5: clean project
+			make clean

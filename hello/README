@@ -1,0 +1,23 @@
+How to use
+
+step 1: build source
+			make
+
+step 2: install module to kernel, execute command:
+			insmod hello.ko
+		check module install success
+			lsmod | grep hello
+
+step 3: check the result (print "Hello, world")
+		execute commamd 
+			dmesg 
+		or 
+			grep "Hello" /var/log/message
+
+step 4: remove module
+			rmmode hello
+		and use command to check remove success
+			lsmod | grep hello
+
+step 5: clean project
+			make clean
