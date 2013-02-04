@@ -1,17 +1,43 @@
-# 如果已定义KERNELRELEASE，则说明是从内核构造系统调用的
-# 因此可利用其内建语句
-ifneq ($(KERNELRELEASE),)
-	obj-m := hello.o
-# 否则，是直接从命令行调用的，这时候要调用内核构造系统
-else
-	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
-	PWD := $(shell pwd)
-default:
-	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+# Comment/uncomment the following line to disable/enable debugging
+#DEBUG = y
 
-.PHONY : clean
-clean:
-	rm -f .hello* *.o *.ko *.mod.c *.order
+
+# Add your debugging flag (or not) to CFLAGS
+ifeq ($(DEBUG),y)
+  DEBFLAGS = -O -g -DSCULL_DEBUG # "-O" is needed to expand inlines
+else
+  DEBFLAGS = -O2
+endif
+
+CFLAGS += $(DEBFLAGS)
+CFLAGS += -I$(LDDINC)
+
+ifneq ($(KERNELRELEASE),)
+# call from kernel build system
+
+scull-objs := main.o pipe.o access.o
+
+obj-m	:= scull.o
+
+else
+
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+PWD       := $(shell pwd)
+
+modules:
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) LDDINC=$(PWD)/../include modules
 
 endif
 
+
+
+clean:
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions
+
+depend .depend dep:
+	$(CC) $(CFLAGS) -M *.c > .depend
+
+
+ifeq (.depend,$(wildcard .depend))
+include .depend
+endif
