@@ -1,15 +1,78 @@
+Fixed: 
+
+	for kernel version: 3.7.4-204.fc18.x86_64
+
+	1. Makefile : CFLAGS --> EXTRA_CFLAGS
+
+	2. main.c
+		1). comment #include <linux/config.h>
+		2). add #include <linux/sched.h>
+		3). comment #include <asm/system.h>
+		4). change .ioctl =    scull_ioctl, to
+			#ifdef HAVE_UNLOCKED_IOCTL
+				   .unlocked_ioctl =    scull_ioctl,
+			#else
+					.ioctl =    scull_ioctl,
+			#endif
+		5). change init_MUTEX(&scull_devices[i].sem); to
+			#ifndef init_MUTE
+				sema_init(&scull_devices[i].sem, 1);
+			#else
+				init_MUTEX(&scull_devices[i].sem);
+			#endif
+
+	3. pipe.c
+		1). add #include <linux/sched.h>
+		2). change .ioctl =    scull_ioctl, to
+			#ifdef HAVE_UNLOCKED_IOCTL
+				   .unlocked_ioctl =    scull_ioctl,
+			#else
+					.ioctl =    scull_ioctl,
+			#endif
+		3). change init_MUTEX(&scull_devices[i].sem); to
+			#ifndef init_MUTE
+				sema_init(&scull_devices[i].sem, 1);
+			#else
+				init_MUTEX(&scull_devices[i].sem);
+			#endif
+
+	4. access.c
+		1). add #include <linux/sched.h>
+		2). add #include <linux/spinlock_types.h>
+		3). change .ioctl =    scull_ioctl, to
+			#ifdef HAVE_UNLOCKED_IOCTL
+				   .unlocked_ioctl =    scull_ioctl,
+			#else
+					.ioctl =    scull_ioctl,
+			#endif
+		4). change 
+				static spinlock_t scull_u_lock = SPIN_LOCK_UNLOCKED;
+			to
+				static DEFINE_SPINLOCK(scull_u_lock);
+		5). change current->uid  to current->cred->uid
+			change current->euid to current->cred->euid
+		6). change init_MUTEX(&scull_devices[i].sem); to
+			#ifndef init_MUTE
+				sema_init(&scull_devices[i].sem, 1);
+			#else
+				init_MUTEX(&scull_devices[i].sem);
+			#endif
+
+	5. Refrence
+		1). http://blog.csdn.net/liuhaoyutz/article/details/7383313	
+		2). http://sourceforge.net/tracker/index.php?func=detail&aid=3152597&group_id=178178&atid=884193 
+		3). http://www.cnblogs.com/xiaoya901109/archive/2012/07/13/2589623.html
+		4). http://blog.sina.com.cn/s/blog_4888f88101012oix.html
+
+
 How to use
 
-step 1: build source
-			make
+	step 1: make
 
-step 2: install module to kernel, execute command:
-			insmod scullc.ko
+	step 2: ./scull_load
 
-step 3: 
+	step 3: ls /dev/scull*
 
-step 4: remove module
-			rmmode scull
+	step 4: ./scull_unload
 
-step 5: clean project
-			make clean
+	step 5: make clean
