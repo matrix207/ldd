@@ -11,7 +11,7 @@ default:
 
 .PHONY : clean
 clean:
-	rm -f .hello* *.o *.ko *.mod.c *.order *symvers
+	rm -rf .hello* *.o *.ko *.mod.c *.order *symvers *.cmd .tmp_versions
 
 endif
 
