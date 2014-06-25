@@ -15,7 +15,7 @@ step 3: check the result (print "Hello, world")
 			grep "Hello" /var/log/message
 
 step 4: remove module
-			rmmode hello
+			rmmod hello
 		and use command to check remove success
 			lsmod | grep hello
 
