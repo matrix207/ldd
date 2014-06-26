@@ -3,6 +3,8 @@ ldd
 
 **Linux device drivers**
 
+Homepage of LDD <http://lwn.net/Kernel/LDD3/>
+
 ###Source
 + ftp://ftp.ora.com/pub/examples/linux/drivers/ 
 + ftp://ar.linux.it/pub/ldd3/
@@ -25,6 +27,9 @@ you will not compile the source (from upon link) success.
 + hellop	sample for "module parameters"
 + scullc	sample for "Simple character Utility for Loading Localities"
 + netlink   sample of using netlink
+
+###LDD for recently kernel
+Refer this site <https://github.com/martinezjavier/ldd3>
 
 ###Reference
 + [How to: Compile Linux kernel modules](http://www.cyberciti.biz/tips/compiling-linux-kernel-module.html)
