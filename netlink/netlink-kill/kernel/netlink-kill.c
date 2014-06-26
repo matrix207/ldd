@@ -5,17 +5,20 @@
 #include <linux/proc_fs.h>  
 #include <asm/siginfo.h>  
 #include <linux/signal.h>  
+#include <linux/completion.h>
+
 static struct sock *netlink_kill_sock;  
 static int flag = 0;  
 struct sig_struct_info {  
     int pid;  
-    int sig  
+    int sig; 
 };  
+
 static DECLARE_COMPLETION(exit_completion);  
 static void recv_handler(struct sock * sk, int length)  
-{  
-    wake_up(sk->sk_sleep);  
-}  
+{ 
+    wake_up(sk->sk_sleep);
+}
 static int process_message_thread(void * data)  
 {  
     struct sk_buff * skb = NULL;  

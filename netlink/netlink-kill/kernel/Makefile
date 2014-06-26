@@ -5,12 +5,11 @@ else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 	PWD := $(shell pwd)
 
-default:
+all:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
-.PHONY : clean
 clean:
-	rm -rf .netlink-kill* *.o *.ko *.mod.c *.order *symvers *.cmd .tmp_versions
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) clean
 
 endif
 
